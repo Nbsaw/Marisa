@@ -1,22 +1,30 @@
 package com.nbsaw.marisa;
 
-import com.nsaw.marisa.banner.Banner;
+import com.nbsaw.marisa.server.Server;
+import com.sun.istack.internal.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Marisa {
+
+    public Marisa(int port){
+        start("127.0.0.1",port);
+    }
+
+    public Marisa(@NotNull String address, @NotNull int port){
+        start(address,port);
+    }
+
     public Marisa(){
-        init();
+        start("127.0.0.1",80);
     }
 
-    public void init(){
-        Banner.print();
-        // Started Success
-        log.info("Marisa is started !!");
-        log.info("u can open in http://127.0.0.1:8080");
+    public void start(){
+        Server.start();
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        new Marisa();
+    public void start(@NotNull String address, @NotNull int port){
+        Server.start(address,port);
     }
+
 }
