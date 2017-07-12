@@ -2,7 +2,7 @@ package com.nbsaw.marisa.server;
 
 import com.nbsaw.marisa.env.Environment;
 import com.nbsaw.morisa.kit.Assert;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -34,7 +34,7 @@ public class Server {
         start("127.0.0.1",80);
     }
 
-    public static void start(@NotNull String address, @NotNull int port){
+    public static void start(@NonNull String address, @NonNull int port){
         // valid port
         Assert.biggerThan(port,65535,"port can't not bigger than 65535 !");
         Assert.smallerThan(port,0,"port can't not be an negative !");
