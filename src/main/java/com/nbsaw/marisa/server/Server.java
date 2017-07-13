@@ -5,8 +5,13 @@ import com.nbsaw.morisa.kit.Assert;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 @Slf4j
-public class Server {
+public class Server{
+
+    private ServerSocket ss;
 
     public static void banner(){
         System.out.println("\n\n　　　　　　　　　　　　　　 　　 _,,.. --､\n" +
@@ -30,20 +35,35 @@ public class Server {
                 "　　　　　　　　 r!　　　!::::::::!/:::::レ'::::::ゝ､　　_,ゝ-へ\n\n");
     }
 
-    public static void start(){
-        start("127.0.0.1",80);
+    private Server(int port){
+        try {
+            ss = new ServerSocket(port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (true){
+            // Acceptor
+            ServerHandler handler = null;
+            try {
+                handler = new ServerHandler(ss.accept());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Thread thread = new Thread(handler);
+            thread.start();
+        }
     }
 
-    public static void start(@NonNull String address, @NonNull int port){
+    public static void start(@NonNull String address, @NonNull String port){
         // valid port
-        Assert.biggerThan(port,65535,"port can't not bigger than 65535 !");
-        Assert.smallerThan(port,0,"port can't not be an negative !");
+        Assert.biggerThan(Integer.valueOf(port),65535,"port can't not bigger than 65535 !");
+        Assert.smallerThan(Integer.valueOf(port),0,"port can't not be an negative !");
         // print initialize information
         long initStart = System.currentTimeMillis();
         log.info("Loading Marisa Environment....");
-        log.info("Environment: jdk.version\t\t=> {}" , Environment.JAVA_VERSION);
-        log.info("Environment: user.dir\t\t\t=> {}"  , Environment.USER_DIR);
-        log.info("Environment: java.io.tmpdir\t=> {}", Environment.JAVA_IO_TMPDIR);
+        log.info("Environment: jdk.version\t\t=> {}"   , Environment.JAVA_VERSION);
+        log.info("Environment: user.dir\t\t\t=> {}"    , Environment.USER_DIR);
+        log.info("Environment: java.io.tmpdir\t=> {}"  , Environment.JAVA_IO_TMPDIR);
         log.info("Environment: user.timezone\t\t=> {}" , Environment.USER_TIMEZONE);
         log.info("Environment: file.encoding\t\t=> {}" , Environment.FILE_ENCODING);
         log.info("Environment: classpath\t\t\t=> {}"   , Environment.CLASSPATH);
@@ -52,6 +72,8 @@ public class Server {
         // valid pass
         log.info("Marisa initialization completed in {} ms",System.currentTimeMillis() - initStart);
         log.info("Marisa is started success !!");
-        log.info("u can open server in http://{}:{}",address,port);
+        log.info("u can open server in http://{}:{}", address.equals("0.0.0.0") ? "127.0.0.1" : address , port);
+        new Server(Integer.valueOf(port));
     }
+
 }
