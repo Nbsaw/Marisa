@@ -1,5 +1,5 @@
 # Marisa
-[![Build Status](https://www.travis-ci.org/Nbsaw/Marisa.svg?branch=master)](https://www.travis-ci.org/Nbsaw/Marisa) [![Coverage Status](https://coveralls.io/repos/github/Nbsaw/Marisa/badge.svg?branch=master)](https://coveralls.io/github/Nbsaw/Marisa?branch=master)
+[![Build Status](https://www.travis-ci.org/Nbsaw/Marisa.svg?branch=master)](https://www.travis-ci.org/Nbsaw/Marisa)
 
 a traditional Web server , The architecture is as follows
 
