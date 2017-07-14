@@ -3,7 +3,7 @@
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d [%t] %5.6p  %-35c :      %m%n"/>
+            <PatternLayout pattern="%d%highlight{ %5p %throwable}{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=green, TRACE=blue} %style{%X{PID}}{magenta} --- [%10.10M ] %style{%-35.35c}{cyan} :   %m%n"/>
         </Console>
     </Appenders>
 

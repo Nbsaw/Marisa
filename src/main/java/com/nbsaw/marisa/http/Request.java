@@ -11,8 +11,11 @@ public class Request{
     private String rawBody;
     private String rawHtml;
 
-    public Request(HashMap headers){
+    public Request(HashMap headers, String rawHeaders, String rawBody, String rawHtml){
         this.headers = headers;
+        this.rawHeaders = rawHeaders;
+        this.rawBody = rawBody;
+        this.rawHtml = rawHtml;
     }
 
     public String getHeader(String name){
