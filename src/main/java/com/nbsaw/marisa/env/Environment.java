@@ -28,6 +28,9 @@ public class Environment {
         if (debug.contains("true") || debug.contains("false")){
             return Boolean.valueOf(debug);
         }
+        else if (debug == null){
+            return false;
+        }
         else{
             throw new IllegalArgumentException(debug + "is not a valid argument");
         }
