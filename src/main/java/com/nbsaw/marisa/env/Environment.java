@@ -12,7 +12,6 @@ public class Environment {
     public final static String FILE_ENCODING     =   System.getProperty("file.encoding");
     public final static String CLASSPATH         =   Thread.currentThread().getContextClassLoader().getResource("").getPath();
     public final static ClassLoader CLASS_LOADER =   Thread.currentThread().getContextClassLoader();
-
     public static Properties config = new Properties();
 
     static {
@@ -21,6 +20,16 @@ public class Environment {
             config.load(in);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean isDebug(){
+        String debug = config.getProperty("debug");
+        if (debug.contains("true") || debug.contains("false")){
+            return Boolean.valueOf(debug);
+        }
+        else{
+            throw new IllegalArgumentException(debug + "is not a valid argument");
         }
     }
 
