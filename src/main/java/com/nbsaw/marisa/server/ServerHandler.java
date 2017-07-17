@@ -33,8 +33,8 @@ public class ServerHandler implements Runnable {
         try {
             Request request = RequestParser.parser(client.getInputStream());
             PrintWriter out = new PrintWriter(client.getOutputStream());
-            out.println("HTTP/1.1 200 OK");
             Date now = new Date();
+            out.println("HTTP/1.1 200 OK");
             out.println("Data:" + now);
             out.println("Server: Marisa");
             out.println("Content-Type: text/html; charset=UTF-8");

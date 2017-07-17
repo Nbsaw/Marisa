@@ -31,7 +31,6 @@ public class RequestParser {
             }
             // parse HttpHeader
             String headerLines[] = rawHeader.split("\r\n");
-//            System.out.println(rawHeader);
             for (int i = 0; i < headerLines.length; i++) {
                 String headerLine = headerLines[i];
                 if (i == 0) {
