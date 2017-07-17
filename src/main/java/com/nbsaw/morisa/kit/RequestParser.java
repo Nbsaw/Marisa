@@ -16,7 +16,7 @@ public class RequestParser {
         String rawHtml;
         StringBuilder builder = new StringBuilder();
         HashMap<String, String> headers = new HashMap<>();
-
+        HashMap<String, String> params  = new HashMap<>();
         // parse html
         int s = reader.read();
         while (reader.ready()) {
@@ -31,13 +31,27 @@ public class RequestParser {
             }
             // parse HttpHeader
             String headerLines[] = rawHeader.split("\r\n");
+//            System.out.println(rawHeader);
             for (int i = 0; i < headerLines.length; i++) {
                 String headerLine = headerLines[i];
                 if (i == 0) {
                     String split[] = headerLine.split(" ");
+                    String url[] = split[1].split("\\?");
                     headers.put("method", split[0]);
-                    headers.put("router", split[1]);
+                    headers.put("router", url[0]);
                     headers.put("httpVersion", split[2]);
+                    // parse url param
+                    if (url.length > 1){
+                        String[] param = url[1].split("&");
+                        for (int j = 0 ; j < param.length ; j++){
+                            String sp[] = param[j].split("=",2);
+                            if (sp.length > 1){
+                                params.put(sp[0],sp[1]);
+                            }else{
+                                params.put(sp[0],"");
+                            }
+                        }
+                    }
                 } else {
                     String[] header = headerLine.split(":", 2);
                     headers.put(header[0], header[1].trim());
@@ -48,6 +62,6 @@ public class RequestParser {
             // 2. x-www-form-urlencoded
 
         }
-        return new Request(headers,rawHtml,rawBody,rawHtml);
+        return new Request(headers,rawHtml,rawBody,rawHtml,params);
     }
 }

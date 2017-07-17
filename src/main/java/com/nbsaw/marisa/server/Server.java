@@ -60,12 +60,12 @@ public class Server{
         // print initialize information
         long initStart = System.currentTimeMillis();
         log.info("Loading Marisa Environment....");
-        log.info("Environment: jdk.version\t\t=> {}"   , Environment.JAVA_VERSION);
-        log.info("Environment: user.dir\t\t\t=> {}"    , Environment.USER_DIR);
-        log.info("Environment: java.io.tmpdir\t=> {}"  , Environment.JAVA_IO_TMPDIR);
-        log.info("Environment: user.timezone\t\t=> {}" , Environment.USER_TIMEZONE);
-        log.info("Environment: file.encoding\t\t=> {}" , Environment.FILE_ENCODING);
-        log.info("Environment: classpath\t\t\t=> {}"   , Environment.CLASSPATH);
+        log.info("Environment: jdk.version\t\t\t=> {}"   , Environment.JAVA_VERSION);
+        log.info("Environment: user.dir\t\t\t=> {}"      , Environment.USER_DIR);
+        log.info("Environment: java.io.tmpdir\t\t=> {}"  , Environment.JAVA_IO_TMPDIR);
+        log.info("Environment: user.timezone\t\t=> {}"   , Environment.USER_TIMEZONE);
+        log.info("Environment: file.encoding\t\t=> {}"   , Environment.FILE_ENCODING);
+        log.info("Environment: classpath\t\t\t=> {}"     , Environment.CLASSPATH);
         log.info("Loading Marisa Environment success.");
         Server.banner();
         // valid pass
