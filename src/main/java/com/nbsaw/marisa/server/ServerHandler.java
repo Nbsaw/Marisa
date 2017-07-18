@@ -1,7 +1,9 @@
 package com.nbsaw.marisa.server;
 
+import com.marisa.exception.NotFoundException;
 import com.nbsaw.marisa.env.Environment;
 import com.nbsaw.marisa.http.Request;
+import com.nbsaw.marisa.http.Response;
 import com.nbsaw.morisa.kit.RequestParser;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -11,6 +13,7 @@ import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.Date;
 
 @Slf4j
@@ -31,17 +34,22 @@ public class ServerHandler implements Runnable {
         MDC.put("PID", rt.getName().replaceAll("@.*", ""));
 
         try {
+            if (client == null) return;
             Request request = RequestParser.parser(client.getInputStream());
-            PrintWriter out = new PrintWriter(client.getOutputStream());
-            Date now = new Date();
-            out.println("HTTP/1.1 200 OK");
-            out.println("Data:" + now);
-            out.println("Server: Marisa");
-            out.println("Content-Type: text/html; charset=UTF-8");
-            out.println();
-            out.println("Marisa moe !!");
-            out.flush();
-            out.close();
+            Response out = new Response(client.getOutputStream());
+            String router =  request.getHeader("router");
+            if (router.equals("/")){
+                out.setHeader();
+                out.setContent("Marisa moe !!");
+            }else{
+                // read file
+                try {
+                    out.setStatic(router);
+                } catch (NotFoundException e) {
+                    out.setError();
+                    log.warn("{} {} is not found",request.getHeaders().get("method"),request.getHeaders().get("router"));
+                }
+            }
             client.close();
             if (Environment.isDebug()){
                 log.debug("{} {} done in {} ms",request.getHeaders().get("method"),request.getHeaders().get("router"),System.currentTimeMillis() - time);

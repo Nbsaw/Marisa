@@ -65,7 +65,7 @@ public class Server{
         log.info("Environment: java.io.tmpdir\t\t=> {}"  , Environment.JAVA_IO_TMPDIR);
         log.info("Environment: user.timezone\t\t=> {}"   , Environment.USER_TIMEZONE);
         log.info("Environment: file.encoding\t\t=> {}"   , Environment.FILE_ENCODING);
-        log.info("Environment: classpath\t\t\t=> {}"     , Environment.CLASSPATH);
+//        log.info("Environment: classpath\t\t\t=> {}"     , Environment.CLASSPATH);
         log.info("Loading Marisa Environment success.");
         Server.banner();
         // valid pass
@@ -74,5 +74,4 @@ public class Server{
         log.info("u can open server in http://{}:{}", address.equals("0.0.0.0") ? "127.0.0.1" : address , port);
         new Server(Integer.valueOf(port));
     }
-
 }
