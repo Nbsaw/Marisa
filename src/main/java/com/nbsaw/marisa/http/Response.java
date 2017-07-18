@@ -1,6 +1,6 @@
 package com.nbsaw.marisa.http;
 
-import com.marisa.exception.NotFoundException;
+import com.nbsaw.marisa.exception.NotFoundException;
 import com.nbsaw.marisa.env.Environment;
 
 import java.io.*;

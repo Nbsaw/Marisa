@@ -1,4 +1,4 @@
-package com.marisa.exception;
+package com.nbsaw.marisa.exception;
 
 public class NotFoundException  extends Exception{
 

@@ -44,4 +44,8 @@ public class Request{
     public HashMap<String, String> getParams() {
         return params;
     }
+
+    public String getRouter(){
+        return headers.get("router");
+    }
 }

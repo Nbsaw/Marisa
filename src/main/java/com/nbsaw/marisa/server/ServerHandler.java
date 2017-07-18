@@ -1,6 +1,6 @@
 package com.nbsaw.marisa.server;
 
-import com.marisa.exception.NotFoundException;
+import com.nbsaw.marisa.exception.NotFoundException;
 import com.nbsaw.marisa.env.Environment;
 import com.nbsaw.marisa.http.Request;
 import com.nbsaw.marisa.http.Response;
@@ -9,12 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.util.Date;
 
 @Slf4j
 public class ServerHandler implements Runnable {
@@ -37,7 +34,8 @@ public class ServerHandler implements Runnable {
             if (client == null) return;
             Request request = RequestParser.parser(client.getInputStream());
             Response out = new Response(client.getOutputStream());
-            String router =  request.getHeader("router");
+            // router manage
+            String router =  request.getRouter();
             if (router.equals("/")){
                 out.setHeader();
                 out.setContent("Marisa moe !!");
