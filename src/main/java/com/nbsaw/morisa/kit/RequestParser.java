@@ -1,7 +1,6 @@
 package com.nbsaw.morisa.kit;
 
 import com.nbsaw.marisa.http.Request;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +17,7 @@ public class RequestParser {
         StringBuilder builder = new StringBuilder();
         HashMap<String, String> headers = new HashMap<>();
         HashMap<String, String> params  = new HashMap<>();
+
         // parse html
         int s = reader.read();
         while (reader.ready()) {
@@ -25,7 +25,8 @@ public class RequestParser {
             s = reader.read();
         }
         rawHtml = builder.toString();
-        if (rawHtml.length() > 0){
+        // if html content isn't empty
+        if (! rawHtml.isEmpty()){
             rawHeader = rawHtml.split("\r\n\r", 2)[0];
             if (rawHtml.split("\r\n\r\n", 2).length > 1) {
                 rawBody = rawHtml.split("\r\n\r\n", 2)[1];
@@ -35,16 +36,18 @@ public class RequestParser {
             for (int i = 0; i < headerLines.length; i++) {
                 String headerLine = headerLines[i];
                 if (i == 0) {
-                    String split[] = headerLine.split(" ");
-                    String url[] = split[1].split("\\?");
-                    headers.put("method", split[0]);
-                    headers.put("router", url[0]);
-                    headers.put("httpVersion", split[2]);
+                    // split payLoad to method , router , http version
+                    String playLoad[] = headerLine.split(" ");
+                    // split router to url and url param
+                    String router[] = playLoad[1].split("\\?");
+                    headers.put("method", playLoad[0]);
+                    headers.put("router", router[0]);
+                    headers.put("version", playLoad[2]);
                     // parse url param
-                    if (url.length > 1){
-                        String[] param = url[1].split("&");
-                        for (int j = 0 ; j < param.length ; j++){
-                            String sp[] = param[j].split("=",2);
+                    if (router.length > 1){
+                        String[] urlParams = router[1].split("&");
+                        for (int j = 0 ; j < urlParams.length ; j++){
+                            String sp[] = urlParams[j].split("=",2);
                             if (sp.length > 1){
                                 params.put(sp[0],sp[1]);
                             }else{

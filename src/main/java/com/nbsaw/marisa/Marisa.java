@@ -14,25 +14,26 @@ import java.lang.management.RuntimeMXBean;
 public class Marisa {
 
     private String port = Environment.config.getProperty("server.port","3000");
+
     private String address = Environment.config.getProperty("server.address","0.0.0.0");
 
-    public Marisa(@NonNull String port){
-        start(address,port);
+    public Marisa(Class bootClass,@NonNull String port){
+        start(address,port,bootClass);
     }
 
-    public Marisa(@NonNull String address, @NonNull String port){
-        start(address,port);
+    public Marisa(Class bootClass,@NonNull String address, @NonNull String port){
+        start(address,port,bootClass);
     }
 
-    public Marisa(){
-        start(address,port);
+    public Marisa(Class bootClass){
+        start(address,port,bootClass);
     }
 
-    public void start() {
-        Server.start(address,port);
+    public void start(Class bootClass) {
+        Server.start(address,port,bootClass);
     }
 
-    public void start(@NonNull String address, @NonNull String port){
+    public void start(@NonNull String address, @NonNull String port,Class bootClass){
 
         // Get the process id
         RuntimeMXBean rt = ManagementFactory.getRuntimeMXBean();
@@ -40,7 +41,7 @@ public class Marisa {
         // MDC
         MDC.put("PID", rt.getName().replaceAll("@.*", ""));
 
-        Server.start(address,port);
+        Server.start(address,port,bootClass);
     }
 
 }

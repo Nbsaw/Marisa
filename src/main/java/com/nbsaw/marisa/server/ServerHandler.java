@@ -11,13 +11,16 @@ import org.slf4j.MDC;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.HashMap;
 
 @Slf4j
 public class ServerHandler implements Runnable {
 
     private Socket client;
-
+    
     public ServerHandler(Socket client){
         this.client = client;
     }
@@ -36,7 +39,19 @@ public class ServerHandler implements Runnable {
             Response out = new Response(client.getOutputStream());
             // router manage
             String router =  request.getRouter();
-            if (router.equals("/")){
+            HashMap<Method,Object> m = Server.getMap.get(router);
+            if (m != null){
+                m.forEach((k,v)->{
+                    try {
+                        k.invoke(v,request,out);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            else if (router.equals("/")){
                 out.setHeader();
                 out.setContent("Marisa moe !!");
             }else{

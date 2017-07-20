@@ -1,16 +1,21 @@
 package com.nbsaw.marisa.server;
 
 import com.nbsaw.marisa.env.Environment;
+import com.nbsaw.morisa.kit.AnnotationUtil;
 import com.nbsaw.morisa.kit.Assert;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
+import java.util.HashMap;
 
 @Slf4j
 public class Server{
-
-    private ServerSocket ss;
+    private ServerSocket serverSocket;
+    private Class bootClass;
+    private HashMap<String,Method> router;
+    public static HashMap<String,HashMap> getMap = new HashMap<>();
 
     public static void banner(){
         System.out.println("\n\n　　　　　　　　　　　　　　 　　 _,,.. --､\n" +
@@ -34,9 +39,9 @@ public class Server{
                 "　　　　　　　　 r!　　　!::::::::!/:::::レ'::::::ゝ､　　_,ゝ-へ\n\n");
     }
 
-    private Server(int port){
+    private Server(int port,Class bootClass){
         try {
-            ss = new ServerSocket(port);
+            serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,7 +49,7 @@ public class Server{
             // Acceptor
             ServerHandler handler = null;
             try {
-                handler = new ServerHandler(ss.accept());
+                handler = new ServerHandler(serverSocket.accept());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -53,7 +58,7 @@ public class Server{
         }
     }
 
-    public static void start(@NonNull String address, @NonNull String port){
+    public static void start(@NonNull String address, @NonNull String port,Class bootClass){
         // valid port
         Assert.biggerThan(Integer.valueOf(port),65535,"port can't not bigger than 65535 !");
         Assert.smallerThan(Integer.valueOf(port),0,"port can't not be an negative !");
@@ -71,6 +76,7 @@ public class Server{
         log.info("Marisa initialization completed in {} ms",System.currentTimeMillis() - initStart);
         log.info("Marisa is started success !!");
         log.info("u can open server in http://{}:{}", address.equals("0.0.0.0") ? "127.0.0.1" : address , port);
-        new Server(Integer.valueOf(port));
+        new AnnotationUtil(bootClass);
+        new Server(Integer.valueOf(port),bootClass);
     }
 }

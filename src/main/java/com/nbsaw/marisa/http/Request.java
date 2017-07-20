@@ -45,6 +45,8 @@ public class Request{
         return params;
     }
 
+//    public String[] cookies() {}
+
     public String getRouter(){
         return headers.get("router");
     }

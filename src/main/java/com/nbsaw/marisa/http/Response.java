@@ -9,7 +9,8 @@ import java.nio.file.Path;
 import java.util.Date;
 
 public class Response {
-    PrintStream  out;
+
+    PrintStream out;
 
     public Response(OutputStream out){
        this.out  = new PrintStream (out);
@@ -57,7 +58,7 @@ public class Response {
 
     public void setError(){
         Date now = new Date();
-        out.println("HTTP/1.1 200 OK");
+        out.println("HTTP/1.1 404 not found");
         out.println("Data:" + now);
         out.println("Server: Marisa");
         out.println("Content-Type: text/html; charset=UTF-8");
@@ -65,5 +66,12 @@ public class Response {
         out.println("404 not found");
         out.flush();
         out.close();
+    }
+
+    public void redirect(String url){
+
+    }
+    public void setCookie(String name,String value){
+
     }
 }
