@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 public class Server{
@@ -49,6 +51,7 @@ public class Server{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ExecutorService exec = Executors.newFixedThreadPool(25);
         while (true){
             // Acceptor
             ServerHandler handler = null;
@@ -57,8 +60,7 @@ public class Server{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Thread thread = new Thread(handler);
-            thread.start();
+            exec.submit(handler);
         }
     }
 

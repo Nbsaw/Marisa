@@ -4,7 +4,6 @@ import com.nbsaw.marisa.exception.NotFoundException;
 import com.nbsaw.marisa.http.Request;
 import com.nbsaw.marisa.http.Response;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
