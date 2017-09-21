@@ -10,10 +10,12 @@ repositories {
 }
 
 ext{
-    slf4j  =  '1.7.25'
-    log4j  =  '2.8.2'
-    lombok =  '1.16.16'
-    junit  =  '4.12'
+    slf4j    =  '1.7.25'
+    log4j    =  '2.8.2'
+    lombok   =  '1.16.16'
+    junit    =  '4.12'
+    commosIO =  '2.5'
+    servlet  =  '4.0.0'
 }
 
 dependencies {
@@ -22,4 +24,8 @@ dependencies {
     compile       "org.apache.logging.log4j:log4j-core:$log4j"
     compile       "org.projectlombok:lombok:$lombok"
     testCompile   "junit:junit:$junit"
+    compile       "commons-io:commons-io:$commosIO"
+    compile       "javax.servlet:javax.servlet-api:$servlet"
+
+
 }

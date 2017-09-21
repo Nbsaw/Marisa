@@ -7,7 +7,6 @@ import com.nbsaw.marisa.http.Response;
 import com.nbsaw.morisa.kit.RequestParser;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -28,42 +27,24 @@ public class ServerHandler implements Runnable {
     @Override
     public void run() {
         long time = System.currentTimeMillis();
-        // Get the process id
+        // Use that can get the process id
+        // It not use that , it will show null
         RuntimeMXBean rt = ManagementFactory.getRuntimeMXBean();
-        // MDC
         MDC.put("PID", rt.getName().replaceAll("@.*", ""));
-
         try {
             if (client == null) return;
-            Request request = RequestParser.parser(client.getInputStream());
-            Response out = new Response(client.getOutputStream());
-            // router manage
-            String router =  request.getRouter();
-            HashMap<Method,Object> m = Server.getMap.get(router);
-            if (m != null){
-                m.forEach((k,v)->{
-                    try {
-                        k.invoke(v,request,out);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
-            else if (router.equals("/")){
-                out.setHeader();
-                out.setContent("Marisa moe !!");
-            }else{
-                // read file
-                try {
-                    out.setStatic(router);
-                } catch (NotFoundException e) {
-                    out.setError();
-                    log.warn("{} {} is not found",request.getHeaders().get("method"),request.getHeaders().get("router"));
+            // Initialization request and out
+            Request  request  = RequestParser.parser(client.getInputStream());
+            Response response = new Response(client.getOutputStream());
+            // try to handler router ..
+            if (!RouterHandler.handlerRouter(request,response)){
+                // try to handler router to static file
+                if (!RouterHandler.handlerFile(request,response)){
+                    // 500 Server Error .
                 }
             }
             client.close();
+            // if in debug mode , show router execute time
             if (Environment.isDebug()){
                 log.debug("{} {} done in {} ms",request.getHeaders().get("method"),request.getHeaders().get("router"),System.currentTimeMillis() - time);
             }

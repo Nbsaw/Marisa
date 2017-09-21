@@ -2,6 +2,7 @@ package com.nbsaw.marisa.http;
 
 import com.nbsaw.marisa.exception.NotFoundException;
 import com.nbsaw.marisa.env.Environment;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -32,7 +33,7 @@ public class Response {
     }
 
     public void setStatic(String p) throws IOException, NotFoundException {
-        File file = null;
+        File file;
         try{
             file = new File(Environment.CLASS_LOADER.getResource("static" + p).getPath());
         }catch (Exception err){
@@ -48,10 +49,7 @@ public class Response {
         out.println("Content-Type: "+ Files.probeContentType(path));
         out.println("Content-Length: "+ in.available());
         out.println();
-        int b = 0;
-        while ((b = in.read()) != -1) {
-            out.write(b);
-        }
+        out.write(IOUtils.toByteArray(in));
         out.flush();
         out.close();
     }

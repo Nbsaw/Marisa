@@ -44,4 +44,8 @@ public class Marisa {
         Server.start(address,port,bootClass);
     }
 
+    public void get(){
+
+    }
+
 }

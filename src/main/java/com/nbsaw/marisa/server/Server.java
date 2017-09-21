@@ -15,7 +15,11 @@ public class Server{
     private ServerSocket serverSocket;
     private Class bootClass;
     private HashMap<String,Method> router;
+    // Get Router List
     public static HashMap<String,HashMap> getMap = new HashMap<>();
+    // Post Router List
+    // Put Router List
+    // Delete Router List
 
     public static void banner(){
         System.out.println("\n\n　　　　　　　　　　　　　　 　　 _,,.. --､\n" +

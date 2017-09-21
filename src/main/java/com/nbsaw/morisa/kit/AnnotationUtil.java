@@ -1,6 +1,7 @@
 package com.nbsaw.morisa.kit;
 
 import com.nbsaw.marisa.annotation.Get;
+import com.nbsaw.marisa.annotation.Path;
 import com.nbsaw.marisa.server.Server;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,27 +52,28 @@ public class AnnotationUtil {
                 try{
                     String currentName = name.replace("/", ".") + "." + file.getName().substring(0, file.getName().length() - 6);
                     Class klass = Class.forName(currentName);
+                    String prefix = "";
+                    if (klass.getAnnotation(Path.class)!=null){
+                        Path path = (Path) klass.getAnnotation(Path.class);
+                        prefix = path.value();
+                    }
                     Object instance = klass.newInstance();
-                    for (Method m : klass.getMethods()){
-                        Annotation[] annotations =  m.getAnnotations();
+                    //
+                    for (Method method : klass.getMethods()){
+                        Annotation[] annotations =  method.getAnnotations();
                         for (Annotation annotation : annotations) {
-                            Method m1 = klass.getMethod(m.getName(),m.getParameterTypes());
+                            Method m1 = klass.getMethod(method.getName(),method.getParameterTypes());
                             String[] s = ((Get)annotation).value();
                             for (String n : s){
-                                log.info("register get {}", n);
+                                if (!n.substring(0,1).equals("/")) n = "/" + n;
+                                log.info("register get {}", prefix + n);
                                 HashMap m3 = new HashMap();
-                                m3.put(m,instance);
-                                Server.getMap.put(n,m3);
+                                m3.put(method,instance);
+                                Server.getMap.put(prefix + n,m3);
                             }
                         }
                     }
-                }catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }catch (InstantiationException e) {
+                }catch (ReflectiveOperationException e){
                     e.printStackTrace();
                 }
             }

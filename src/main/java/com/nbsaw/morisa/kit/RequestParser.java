@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class RequestParser {
-
+    // TODO wait to optimization
     public static Request parser(InputStream in) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String rawHeader;
@@ -60,7 +60,7 @@ public class RequestParser {
                     headers.put(header[0], header[1].trim());
                 }
             }
-            // parse HttpBody
+            // TODO parse HttpBody
             // 1. Webkit from
             // 2. x-www-form-urlencoded
 

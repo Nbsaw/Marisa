@@ -2,8 +2,11 @@ package morisa.test;
 
 import com.nbsaw.marisa.annotation.Get;
 import com.nbsaw.marisa.annotation.Path;
+import com.nbsaw.marisa.exception.NotFoundException;
 import com.nbsaw.marisa.http.Request;
 import com.nbsaw.marisa.http.Response;
+
+import java.io.IOException;
 
 @Path("/marisa")
 public class Qsa {
@@ -23,5 +26,10 @@ public class Qsa {
     public void morisa(Request request, Response response){
         response.setHeader();
         response.setContent("emmmm show marisa");
+    }
+
+    @Get(value = {"/pic"})
+    public void  st(Request request, Response response) throws IOException, NotFoundException {
+        response.setStatic("/test.jpg");
     }
 }
