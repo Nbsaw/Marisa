@@ -10,4 +10,10 @@ public class Main {
         response.setHeader();
         response.setContent("fuck test");
     }
+
+//    @Get(value = "/")
+//    public void index(Request request, Response response){
+//        response.setHeader();
+//        response.setContent("Marisa Moe !!!");
+//    }
 }

@@ -11,6 +11,7 @@ public class Environment {
     public final static String USER_TIMEZONE     =   System.getProperty("user.timezone");
     public final static String FILE_ENCODING     =   System.getProperty("file.encoding");
     public final static ClassLoader CLASS_LOADER =   Thread.currentThread().getContextClassLoader();
+    public final static String INDEX             =   "index.html";
     public static Properties config = new Properties();
 
     static {

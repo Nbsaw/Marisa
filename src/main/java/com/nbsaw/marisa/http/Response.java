@@ -33,14 +33,22 @@ public class Response {
     }
 
     public void setStatic(String p) throws IOException, NotFoundException {
+        String INDEX = Environment.INDEX;
         File file;
         try{
-            file = new File(Environment.CLASS_LOADER.getResource("static" + p).getPath());
+            // Index Handler
+            if (p.substring(p.length() - 1).contains("/")){
+                file = new File(Environment.CLASS_LOADER.getResource("static/" + p + INDEX).getPath());
+            }
+            else{
+                file = new File(Environment.CLASS_LOADER.getResource("static" + p).getPath());
+            }
+            // TODO dir manage
         }catch (Exception err){
             throw new NotFoundException();
         }
         Path path = file.toPath();
-        FileInputStream  in = new FileInputStream(file);
+        FileInputStream in = new FileInputStream(file);
         // set Header
         Date now = new Date();
         out.println("HTTP/1.1 200 OK");
